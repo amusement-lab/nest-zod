@@ -1,14 +1,19 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, UsePipes } from '@nestjs/common';
+import { ZodValidationPipe } from '@anatine/zod-nestjs';
+import { ApiCreatedResponse } from '@nestjs/swagger';
 
 import { ShoeService } from './shoe.service';
+import { GetShoeDto, GetShoeZ } from './shoe.dto';
 
 @Controller('shoe')
+@UsePipes(ZodValidationPipe)
 export class ShoeController {
   constructor(private readonly shoeService: ShoeService) {}
 
   @Get()
+  @ApiCreatedResponse({ type: GetShoeDto })
   async list() {
-    return this.shoeService.list();
+    return GetShoeZ.parse(await this.shoeService.list());
   }
 
   @Post()
