@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 
 import { ShoeService } from './shoe.service';
+import { GetShoeSchema, CreateShoeDto, CreateShoeSchema } from './shoe.dto';
 
 @Controller('shoe')
 export class ShoeController {
@@ -8,11 +9,11 @@ export class ShoeController {
 
   @Get()
   async list() {
-    return this.shoeService.list();
+    return GetShoeSchema.parse(await this.shoeService.list());
   }
 
   @Post()
-  async create(@Body() body: any) {
-    return await this.shoeService.create(body);
+  async create(@Body() body: CreateShoeDto) {
+    return CreateShoeSchema.parse(await this.shoeService.create(body));
   }
 }
