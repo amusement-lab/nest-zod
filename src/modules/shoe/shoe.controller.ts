@@ -3,7 +3,7 @@ import { ZodValidationPipe } from '@anatine/zod-nestjs';
 import { ApiCreatedResponse } from '@nestjs/swagger';
 
 import { ShoeService } from './shoe.service';
-import { GetShoeDto, GetShoeZ } from './shoe.dto';
+import { CreateaShoeDto, GetShoeDto, GetShoeZ } from './shoe.dto';
 
 @Controller('shoe')
 @UsePipes(ZodValidationPipe)
@@ -17,7 +17,8 @@ export class ShoeController {
   }
 
   @Post()
-  async create(@Body() body: any) {
+  @ApiCreatedResponse({ type: CreateaShoeDto })
+  async create(@Body() body: CreateaShoeDto) {
     return await this.shoeService.create(body);
   }
 }
