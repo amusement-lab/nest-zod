@@ -5,13 +5,24 @@ import { z } from 'zod';
 export const GetShoeZ = extendApi(
   z.array(
     z.object({
-      id: z.string(),
-      createdAt: z.date(),
-      updatedAt: z.date(),
       name: z.string(),
       merk: z.string(),
+      qty: z.number(),
+      available: z.boolean(),
+      desc: z.string(),
+      price: z.number(),
+      img: z.string(),
     }),
   ),
+);
+
+export const GetShoeQuery = extendApi(
+  z.object({
+    qty: z.object({
+      gt: z.coerce.number(),
+    }),
+    available: z.coerce.boolean(),
+  }),
 );
 
 export class GetShoeDto extends createZodDto(GetShoeZ) {}
