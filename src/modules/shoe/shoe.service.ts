@@ -8,13 +8,13 @@ import { paginate } from '~~/helpers/paginate';
 export class ShoeService {
   constructor(private prisma: PrismaService) {}
 
-  async list(page: number, limit: number, where: any) {
+  async list(page: number, limit: number, where: any, orderBy: any) {
     const { error, data } = await until(() =>
       paginate({
-        request: { where, page, limit },
+        request: { where, page, limit, orderBy },
         count: (where) => this.prisma.shoe.count({ where }),
-        data: ({ where, take, skip }) =>
-          this.prisma.shoe.findMany({ where, take, skip }),
+        data: ({ where, orderBy, take, skip }) =>
+          this.prisma.shoe.findMany({ where, orderBy, take, skip }),
       }),
     );
 

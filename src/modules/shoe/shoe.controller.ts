@@ -26,21 +26,35 @@ export class ShoeController {
     // qs.stringify
     console.log(
       qs.stringify({
-        filters: {
-          qty: { gt: 40 },
+        where: {
+          qty: { gt: 20 },
           available: true,
         },
+        orderBy: [
+          {
+            price: 'desc',
+          },
+          {
+            qty: 'desc',
+          },
+        ],
       }),
     );
 
     // qs.parse
-    const { filters } = qs.parse(req.url.split('?')[1]);
-    console.log(filters);
+    const { where, orderBy } = qs.parse(req.url.split('?')[1]);
+    console.log(where);
+    console.log(orderBy);
 
     // zod.parse
-    console.log(GetShoeQuery.parse(filters));
+    console.log(GetShoeQuery.parse(where));
 
-    return await this.shoeService.list(1, 10, GetShoeQuery.parse(filters));
+    return await this.shoeService.list(
+      1,
+      10,
+      GetShoeQuery.parse(where),
+      orderBy,
+    );
   }
 
   @Post()

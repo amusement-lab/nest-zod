@@ -21,7 +21,7 @@ export const GetShoeQuery = extendApi(
     qty: z.object({
       gt: z.coerce.number(),
     }),
-    available: z.coerce.boolean(),
+    available: z.enum(['true', 'false']).transform((value) => value === 'true'),
   }),
 );
 

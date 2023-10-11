@@ -21,15 +21,23 @@
 // @Date        : 2023-10-10 (10 October 2023)
 // Update how to `where` import from request
 
+// @Author      : WahyuBucil
+// @Conributor  : Dipadana
+// @Version     : 0.0.5
+// @Date        : 2023-10-11 (11 October 2023)
+// Update how to `orderBy` import from request
+
 interface PaginateOptions<Data> {
-  request: { page: number; limit: number; where: any };
+  request: { page: number; limit: number; where: any; orderBy: any };
   count: (where: any) => Promise<number>;
   data: ({
     where,
+    orderBy,
     take,
     skip,
   }: {
     where: any;
+    orderBy: any;
     take: number;
     skip: number;
   }) => Promise<Data>;
@@ -63,7 +71,12 @@ async function paginate<Data>(opts: PaginateOptions<Data>) {
 
   const [totalData, data] = await Promise.all([
     opts.count(opts.request.where),
-    opts.data({ where: opts.request.where, take: limit, skip: startIndex }),
+    opts.data({
+      where: opts.request.where,
+      orderBy: opts.request.orderBy,
+      take: limit,
+      skip: startIndex,
+    }),
   ]);
 
   const totalPage = Math.ceil(totalData / limit);
